@@ -108,6 +108,9 @@ class Coverage(Plugin):
                           dest='cover_html_dir',
                           metavar='DIR',
                           help='Produce HTML coverage information in dir')
+        parser.add_option('--cover-suffix', action='store',
+                          dest='cover_suffix',
+                          help='Add suffix to data file')
 
     def configure(self, options, config):
         """
@@ -131,6 +134,7 @@ class Coverage(Plugin):
         self.conf = config
         self.coverErase = options.cover_erase
         self.coverTests = options.cover_tests
+        self.coverSuffix = options.cover_suffix
         self.coverPackages = []
         if options.cover_packages:
             for pkgs in [tolist(x) for x in options.cover_packages]:
@@ -156,6 +160,7 @@ class Coverage(Plugin):
             log.debug("Clearing previously collected coverage statistics")
             self.coverInstance.erase()
         self.coverInstance.exclude('#pragma[: ]+[nN][oO] [cC][oO][vV][eE][rR]')
+        self.coverInstance.data_suffix = self.coverSuffix
         self.coverInstance.start()
 
     def report(self, stream):
