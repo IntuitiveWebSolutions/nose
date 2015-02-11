@@ -89,6 +89,9 @@ class Coverage(Plugin):
                           dest="cover_xml_file",
                           metavar="FILE",
                           help="Produce XML coverage information in file")
+        parser.add_option('--cover-suffix', action='store',
+                          dest='cover_suffix',
+                          help='Add suffix to data file')
 
     def configure(self, options, conf):
         """
@@ -132,6 +135,7 @@ class Coverage(Plugin):
             log.debug('Will put HTML coverage report in %s', self.coverHtmlDir)
         self.coverBranches = options.cover_branches
         self.coverXmlFile = None
+        self.coverSuffix = options.cover_suffix
         if options.cover_min_percentage:
             self.coverMinPercentage = int(options.cover_min_percentage.rstrip('%'))
         if options.cover_xml:
@@ -140,7 +144,7 @@ class Coverage(Plugin):
         if self.enabled:
             self.status['active'] = True
             self.coverInstance = coverage.coverage(auto_data=False,
-                branch=self.coverBranches, data_suffix=None,
+                branch=self.coverBranches, data_suffix=self.coverSuffix,
                 source=self.coverPackages)
 
     def begin(self):
