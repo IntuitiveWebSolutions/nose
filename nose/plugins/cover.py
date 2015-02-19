@@ -167,7 +167,7 @@ class Coverage(Plugin):
         """
         log.debug("Coverage report")
         self.coverInstance.stop()
-        self.coverInstance.combine()
+        #self.coverInstance.combine()
         self.coverInstance.save()
         modules = [module
                     for name, module in sys.modules.items()
